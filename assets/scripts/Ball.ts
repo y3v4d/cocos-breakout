@@ -23,6 +23,8 @@ export class Ball extends Component {
     }
 
     protected onBeginContact(self: Collider2D, other: Collider2D, contact: IPhysics2DContact | null) {
+        if(!other.node.isValid) return;
+
         CollisionPoints.instance.clear();
         for(const point of contact.getWorldManifold().points) {
             CollisionPoints.instance.add(point);

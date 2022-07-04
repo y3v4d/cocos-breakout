@@ -4,7 +4,7 @@ const { ccclass, property } = _decorator;
 @ccclass('Brick')
 export class Brick extends Component {
     private collider: Collider2D = null;
-    private toDestroy = false;
+    private toDeactive = false;
 
     onLoad() {
         this.collider = this.getComponent(Collider2D);
@@ -12,16 +12,15 @@ export class Brick extends Component {
         this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact.bind(this));
     }
 
-    update(deltaTime: number) {
-        
-    }
-
     lateUpdate() {
-        if(this.toDestroy) this.node.destroy();
+        if(this.toDeactive) {
+            this.node.active = false;
+            this.toDeactive = false;
+        }
     }
 
-    onBeginContact(self: Collider2D, other: Collider2D, contact: IPhysics2DContact | null) {
-        this.toDestroy = true;
+    protected onBeginContact(self: Collider2D, other: Collider2D, contact: IPhysics2DContact | null) {
+        this.toDeactive = true;
     }
 }
 

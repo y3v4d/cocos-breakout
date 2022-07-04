@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec2, CCFloat, RigidBody2D, BoxCollider2D, Contact2DType, Collider2D, IPhysics2DContact } from 'cc';
+import { _decorator, Component, Node, Vec2, CCFloat, RigidBody2D, BoxCollider2D, Contact2DType, Collider2D, IPhysics2DContact, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 export enum PlayerMoveType {
@@ -15,14 +15,15 @@ export class Player extends Component {
     private rigidbody: RigidBody2D = null;
     private collider: BoxCollider2D = null;
 
+    private startPosition: Vec3 = new Vec3();
+
     onLoad() {
+        this.node.getPosition(this.startPosition);
+
         this.rigidbody = this.getComponent(RigidBody2D);
         this.collider = this.getComponent(BoxCollider2D);
 
         this.collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact.bind(this));
-    }
-
-    update(deltaTime: number) {
     }
 
     move(type: PlayerMoveType) {
@@ -34,8 +35,15 @@ export class Player extends Component {
         }
     }
 
+    reset() {
+        this.move(PlayerMoveType.NONE);
+        this.node.setPosition(this.startPosition);
+    }
+
     protected onBeginContact(self: Collider2D, other: Collider2D, contact: IPhysics2DContact | null) {
-        
+        if(other.node.name !== "Left" && other.node.name !== "Right") return;
+
+        this.move(PlayerMoveType.NONE);
     }
 }
 

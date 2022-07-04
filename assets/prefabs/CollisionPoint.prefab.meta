@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.38",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "f043bc68-70b9-47fe-a2ef-2130536e3cf6",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "CollisionPoint"
+  }
+}

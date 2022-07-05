@@ -13,6 +13,7 @@ export class Ball extends Component {
     private startPosition: Vec3 = new Vec3(0, 0, 0);
 
     private bottomWallContact = false;
+    private _velocityBackup = new Vec2();
 
     onLoad() {
         this.node.getPosition(this.startPosition);
@@ -28,6 +29,15 @@ export class Ball extends Component {
             this.bottomWallContact = false;
             this.onBottomWallEnter();
         }
+    }
+
+    resume() {
+        this.rigidbody.linearVelocity = this._velocityBackup;
+    }
+
+    pause() {
+        this._velocityBackup.set(this.rigidbody.linearVelocity);
+        this.rigidbody.linearVelocity = new Vec2(0, 0);
     }
 
     launch() {
